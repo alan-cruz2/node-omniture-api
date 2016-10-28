@@ -74,11 +74,7 @@ OmnitureAPI.prototype.makeRequest = function(endpoint,data,callback) {
   };
 
   request(requestOptions, function(error,response,body) {
-    if (!error) {
-      callback((response.statusCode==200) ,JSON.parse(body));
-    } else {
-      callback(false,error);
-    }
+    callback(error, response, body);
   });
 };
 
