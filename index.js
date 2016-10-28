@@ -70,7 +70,8 @@ OmnitureAPI.prototype.makeRequest = function(endpoint,data,callback) {
                   "Nonce=\""+nonce+"\", "+
                   "Created=\""+nonce_ts+"\""
     },
-    form:data
+    form:data,
+    proxy: this.proxy
   };
 
   request(requestOptions, function(error,response,body) {
