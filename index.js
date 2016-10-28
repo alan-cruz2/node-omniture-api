@@ -22,32 +22,32 @@ function OmnitureAPI( options ) {
 
 OmnitureAPI.prototype.queueAndFetchReport = function(requestData,callback) {
   var scope = this;
-  this.makeRequest('Report.Queue',requestData,function(success,reportIdData) {
-    if ( success ) {
+  this.makeRequest('Report.Queue',requestData,function(error,response,data) {
+    if (!error) {
       //Requires at least a small delay before making the subsequent request.
       setTimeout(function() {
-        scope.fetchReport(reportIdData.reportID,function(success,reportData) {
-          callback(success,reportData);
+        scope.fetchReport(response.reportID,function(err,res,data) {
+          callback(err,res,data);
         });
       },500);
     } else {
-      callback(false,reportIdData);
+      callback(error,response);
     }
   });
 };
 
 OmnitureAPI.prototype.fetchReport = function(reportId,callback) {
   var scope = this;
-  this.makeRequest('Report.Get',{"reportID":reportId},function(success,reportData) {
-    if (success) {
-      callback(true,reportData);
+  this.makeRequest('Report.Get',{"reportID":reportId},function(error,response,data) {
+    if (!error) {
+      callback(error,response,data);
     } else {
-      if ( reportData.error == 'report_not_ready' ) {
+      if ( response.error == 'report_not_ready' ) {
         setTimeout(function() {
           scope.fetchReport(reportId,callback);
         }, 2000);
       } else {
-        callback(false,reportData);
+        callback(error,response);
       }
     }
   });
