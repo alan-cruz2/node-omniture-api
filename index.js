@@ -7,12 +7,12 @@ var sha1 = require('sha1')
   , util = require('util');
 
 var apiUrls = {
-  'sanJose': 'https://api.omniture.com/admin/1.2/rest/',
-  'dallas': 'https://api2.omniture.com/admin/1.2/rest/',
-  'london': 'https://api3.omniture.com/admin/1.2/rest/',
-  'sanJoseBeta': 'https://beta-api.omniture.com/admin/1.2/rest/',
-  'dallasBeta': 'https://beta-api2.omniture.com/admin/1.2/rest/',
-  'sandbox': 'https://api-sbx1.omniture.com/admin/1.2/rest/'
+  'sanJose': 'https://api.omniture.com/admin/1.4/rest/',
+  'dallas': 'https://api2.omniture.com/admin/1.4/rest/',
+  'london': 'https://api3.omniture.com/admin/1.4/rest/',
+  'sanJoseBeta': 'https://beta-api.omniture.com/admin/1.4/rest/',
+  'dallasBeta': 'https://beta-api2.omniture.com/admin/1.4/rest/',
+  'sandbox': 'https://api-sbx1.omniture.com/admin/1.4/rest/'
 };
 
 function OmnitureAPI( options ) {
