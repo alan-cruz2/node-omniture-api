@@ -19,20 +19,33 @@ function OmnitureAPI( options ) {
   this.apiUrl = apiUrls[this.environment || 'sanJose'];
 }
 
-OmnitureAPI.prototype.queueAndFetchReport = function(requestData,callback) {
-  var scope = this;
-  this.makeRequest('Report.Queue',requestData,function(error,response,data) {
-    if (!error) {
-      //Requires at least a small delay before making the subsequent request.
-      setTimeout(function() {
-        scope.fetchReport(data.reportID,function(err,res,data) {
-          callback(err,res,data);
-        });
-      },500);
-    } else {
-      callback(error,response, data);
-    }
-  });
+
+
+OmnitureAPI.prototype.queueAndFetchReport = function(requestDataArray,callback) {
+  this.resultsArray = [];
+  
+  if(!Array.isArray(requestDataArray) throw new TypeError('Unexpected argument received. Expected typeof Array');
+  
+  for(var index = 0; index < requestDataArray.length, index++){
+    this.makeRequest('Report.Queue',requestDataArray[index], function(error,response,data) {
+      if (!error) {
+        //Requires at least a small delay before making the subsequent request.
+        setTimeout(function() {
+          this.fetchReport(data.reportID,function(err,res,data) {
+            this.resultsArray.push({ err: err, res: res, data: data, key: data.report.elements[0].id});
+            if(this.resultsArray.length === requestDataArray.length){
+              callback(err,res,data);
+            }
+          }.bind(this));
+        }.bind(this),500);
+      } else {
+        this.resultsArray.push({ err: err, res: res, key: 'Error', error: true});
+        if(this.resultsArray.length === requestDataArray.length){
+          callback(error, response, data);
+        }
+      }
+    }.bind(this));
+  }
 };
 
 OmnitureAPI.prototype.fetchReport = function(reportId,callback) {
@@ -48,7 +61,7 @@ OmnitureAPI.prototype.fetchReport = function(reportId,callback) {
   });
 };
 
-OmnitureAPI.prototype.makeRequest = function(endpoint,data,callback) {
+OmnitureAPI.prototype.makeRequest = function(endpoint,data,callback, index) {
   //Create info used for header authentication.
   var date = new Date();
   var nonce = md5(Math.random());
