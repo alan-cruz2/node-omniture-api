@@ -24,7 +24,7 @@ function OmnitureAPI( options ) {
 OmnitureAPI.prototype.queueAndFetchReport = function(requestDataArray,callback) {
   this.resultsArray = [];
   
-  if(!Array.isArray(requestDataArray) throw new TypeError('Unexpected argument received. Expected typeof Array');
+  if(!Array.isArray(requestDataArray) return new TypeError('Unexpected argument received. Expected typeof Array');
   
   for(var index = 0; index < requestDataArray.length, index++){
     this.makeRequest('Report.Queue',requestDataArray[index], function(error,response,data) {
