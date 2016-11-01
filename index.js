@@ -26,7 +26,7 @@ OmnitureAPI.prototype.queueAndFetchReport = function(requestDataArray,callback) 
   
   if(!Array.isArray(requestDataArray)){ throw new TypeError('Unexpected argument received. Expected typeof Array') };
   
-  for(var index = 0; index < requestDataArray.length, index++){
+  for(var index = 0; index < requestDataArray.length; index++){
     this.makeRequest('Report.Queue',requestDataArray[index], function(error,response,data) {
       if (!error) {
         //Requires at least a small delay before making the subsequent request.
