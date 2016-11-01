@@ -34,14 +34,14 @@ OmnitureAPI.prototype.queueAndFetchReport = function(requestDataArray,callback) 
           this.fetchReport(data.reportID,function(err,res,data) {
             this.resultsArray.push({ err: err, res: res, data: data, key: data.report.elements[0].id});
             if(this.resultsArray.length === requestDataArray.length){
-              callback(err,res,data);
+              callback(err,res,this.resultsArray);
             }
           }.bind(this));
         }.bind(this),500);
       } else {
         this.resultsArray.push({ err: err, res: res, key: 'Error', error: true});
         if(this.resultsArray.length === requestDataArray.length){
-          callback(error, response, data);
+          callback(error, response, this.resultsArray);
         }
       }
     }.bind(this));
